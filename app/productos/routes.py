@@ -1,8 +1,9 @@
-from flask import render_template
+from flask import render_template,redirect,flash
 from . import productos
 import app
-from .forms import RegistrarProductoForm
+from .forms import NewproductForm,EditProductForm
 import os
+
 
 #rutas del modulo "productos"
 @productos.route("/listar")
@@ -17,8 +18,9 @@ def listar():
 @productos.route("/nuevo" ,
                   methods= ["GET" , "POST"])
 def nuevo():
+    
      #definir el formulario
-    form = RegistrarProductoForm()
+    form = NewproductForm()
     #definir el objeto producto vacio
     p= app.models.Producto()
     if form.validate_on_submit():
@@ -33,9 +35,35 @@ def nuevo():
         file.save(os.path.abspath(os.getcwd() +
                                 "/app/productos/imagenes/" +
                                 form.imagen.data.filename))
-        return "producto registrado"
+        
+        flash("producto registrado correctamente")
+        return redirect("/productos/listar")
 
-    return render_template("new.html" , 
+    return render_template("new.html",
+                           operacion="Nuevo",
                            form = form) 
 
+@productos.route("/editar/<producto_id>",
+                  methods= ["GET" , "POST"])
+def editar(producto_id):
+    p = app.models.Producto.query.get(producto_id)
+    form = EditProductForm(obj = p)
+    if form.validate_on_submit():
+        form.populate_obj(p)
+        app.db.session.commit()
+        flash("Producto actualizado correctamente")
+        return redirect("/productos/listar")
 
+    return render_template("new.html",
+                           operacion="Actualizar",
+                           form = form)
+
+@productos.route("/eliminar/<producto_id>",
+                  methods= ["GET" , "POST"])
+def eliminar(producto_id):
+    p = app.models.Producto.query.get(producto_id)
+    app.db.session.delete(p)
+    app.db.session.commit()
+    
+    flash("producto eliminado correctamente")
+    return redirect("/productos/listar")

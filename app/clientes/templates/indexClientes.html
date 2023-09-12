@@ -10,33 +10,32 @@
                     {{ mensaje }}
             </div>
         {% endfor %}
-        <h1> Listado de productos</h1> 
+        <h1> Listado de Clientes </h1> 
 
-        <a href="/productos/nuevo" class="btn btn-success">Nuevo producto</a>
+        <a href="/clientes/nuevocliente" class="btn btn-success">Nuevo Cliente</a>
 
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Imagen</th>
+                    <th>Nombre de usuario</th>
+                    <th>Contraseña</th>
+                    <th>Correo</th>
                     <th>Actualizar</th>
                     <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                {% for producto in productos %}
+                {% for cliente in clientes %}
                 <tr>
-                    <td>{{ producto.nombre }}</td>
-                    <td>{{ producto.precio }}</td>
-                    <td>
-                        <img src="imagenes/{{ producto.imagen }}" alt="" height="100px" />
+                    <td>{{ cliente.username }}</td>
+                    <td>{{ cliente.password }}</td>
+                    <td>{{ cliente.email }}</td>
+
+                    <td>        
+                        <a href="/clientes/editarcliente/{{cliente.id}}" class="btn btn-warning">Actualizar</a>
                     </td>
                     <td>        
-                        <a href="/productos/editar/{{producto.id}}" class="btn btn-warning">Actualizar</a>
-                    </td>
-                    <td>        
-                        <a href="/productos/eliminar/{{producto.id}}" class="btn btn-danger">Eliminar</a>
+                        <a href="/clientes/eliminarcliente/{{cliente.id}}" class="btn btn-danger">Eliminar</a>
                     </td>
                 </tr>
                 {% endfor %}

@@ -2,11 +2,11 @@
 {% import "bootstrap/wtf.html" as wtf%}
 
 {% block content %}
-    <h1>{{ operacion }} Producto</h1>
+    <h1>{{ operacion }} Cliente</h1>
     <form action=""
           method="POST"
           novalidate
          enctype="multipart/form-data" >
-        {{ wtf.quick_form(form) }}
+        {{ wtf.quick_form(formcliente) }}
     </form>
 {% endblock%}
